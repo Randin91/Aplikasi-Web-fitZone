@@ -1,0 +1,64 @@
+body {
+  font-family: Arial, sans-serif;
+  background: url('bg.jpg') no-repeat center center fixed;
+  background-size: cover;
+  color: white;
+  margin: 0;
+  padding: 0;
+}
+
+.login-container, .register-container, .dashboard {
+  background-color: rgba(0, 0, 0, 0.65);
+  margin: 100px auto;
+  padding: 40px;
+  border-radius: 15px;
+  width: 300px;
+  text-align: center;
+}
+
+input, select, button {
+  width: 90%;
+  margin: 10px auto;
+  padding: 10px;
+  border-radius: 8px;
+  border: none;
+}
+
+button {
+  background-color: #00e676;
+  color: black;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+.link {
+  display: block;
+  color: #00b0ff;
+  margin-top: 10px;
+}
+
+.menu {
+  list-style: none;
+  padding: 0;
+}
+
+.menu li {
+  margin: 10px 0;
+}
+
+.menu a {
+  background: black;
+  padding: 10px;
+  display: block;
+  color: white;
+  text-decoration: none;
+  border-radius: 8px;
+}
+
+.output {
+  margin-top: 30px;
+  background: #e0f7fa;
+  padding: 15px;
+  border-radius: 10px;
+  color: black;
+}

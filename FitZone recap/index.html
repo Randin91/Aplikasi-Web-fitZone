@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>fitZone - Dashboard</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+  <!-- REGISTER SECTION -->
+  <div class="register-container" id="registerSection">
+    <h2>fitZone - Register</h2>
+    <input type="text" placeholder="Nama" id="regNama">
+    <input type="number" placeholder="Umur" id="regUmur">
+    <input type="number" placeholder="Berat Badan (kg)" id="regBerat">
+    <input type="number" placeholder="Tinggi Badan (cm)" id="regTinggi">
+    <select id="regGender">
+      <option value="">Pilih Jenis Kelamin</option>
+      <option value="Laki-laki">Laki-laki</option>
+      <option value="Perempuan">Perempuan</option>
+    </select>
+    <input type="text" placeholder="Username" id="regUsername">
+    <input type="password" placeholder="Password" id="regPassword">
+    <button onclick="register()">Daftar</button>
+    <p>Sudah punya akun? <a href="#" onclick="switchToLogin()">Masuk di sini</a></p>
+  </div>
+
+  <!-- LOGIN SECTION -->
+  <div class="login-container" id="loginSection" style="display:none;">
+    <h2>fitZone - Login</h2>
+    <input type="text" placeholder="Username" id="username">
+    <input type="password" placeholder="Password" id="password">
+    <button onclick="login()">Masuk</button>
+    <p>Belum punya akun? <a href="#" onclick="switchToRegister()">Daftar di sini</a></p>
+  </div>
+
+  <!-- DASHBOARD SECTION -->
+  <div class="dashboard" id="dashboardSection" style="display:none;">
+    <h2 id="welcomeText">Selamat Datang di fitZone!</h2>
+    <ul class="menu">
+      <li><a href="#" onclick="showSection('kalori')">Hitung Kalori</a></li>
+      <li><a href="#" onclick="showSection('history')">History Latihan</a></li>
+      <li><a href="#" onclick="showSection('progres')">Progres Mingguan</a></li>
+      <li><a href="#" onclick="showSection('asupan')">Asupan Kalori</a></li>
+      <li><a href="#" onclick="showSection('kalender')">Kalender Latihan</a></li>
+    </ul>
+    <div class="output" id="fiturContent"></div>
+    <button onclick="logout()">Keluar</button>
+  </div>
+
+  <script>
+    let registeredUser = null;
+
+    function switchToLogin() {
+      document.getElementById("registerSection").style.display = "none";
+      document.getElementById("loginSection").style.display = "block";
+    }
+
+    function switchToRegister() {
+      document.getElementById("loginSection").style.display = "none";
+      document.getElementById("registerSection").style.display = "block";
+    }
+
+    function register() {
+      const nama = document.getElementById("regNama").value;
+      const umur = document.getElementById("regUmur").value;
+      const berat = document.getElementById("regBerat").value;
+      const tinggi = document.getElementById("regTinggi").value;
+      const gender = document.getElementById("regGender").value;
+      const username = document.getElementById("regUsername").value;
+      const password = document.getElementById("regPassword").value;
+
+      if (nama && umur && berat && tinggi && gender && username && password) {
+        registeredUser = { nama, umur, berat, tinggi, gender, username, password };
+        alert("Registrasi berhasil! Silakan login.");
+        switchToLogin();
+      } else {
+        alert("Harap isi semua kolom!");
+      }
+    }
+
+    function login() {
+      const user = document.getElementById("username").value;
+      const pass = document.getElementById("password").value;
+      if (registeredUser && user === registeredUser.username && pass === registeredUser.password) {
+        document.getElementById("loginSection").style.display = "none";
+        document.getElementById("dashboardSection").style.display = "block";
+        document.getElementById("welcomeText").innerText = `Selamat Datang, ${registeredUser.nama} di fitZone!`;
+      } else {
+        alert("Username atau password salah!");
+      }
+    }
+
+    function logout() {
+      document.getElementById("registerSection").style.display = "none";
+      document.getElementById("loginSection").style.display = "block";
+      document.getElementById("dashboardSection").style.display = "none";
+      document.getElementById("fiturContent").innerHTML = "";
+    }
+
+    function showSection(fitur) {
+      let content = "";
+      switch (fitur) {
+        case "kalori":
+          content = `
+            <h3>Hitung Kalori Terbakar</h3>
+            <label>Durasi Latihan (menit)</label>
+            <input type="number" id="durasi">
+            <label>Jenis Latihan</label>
+            <select id="jenis">
+              <option value="6">Jalan Kaki</option>
+              <option value="8">Lari</option>
+              <option value="10">Renang</option>
+            </select>
+            <button onclick="hitungKalori()">Hitung</button>
+            <div id="hasil"></div>
+          `;
+          break;
+        case "history":
+          content = `<h3>History Latihan</h3><ul><li>Push-up - 15 menit</li><li>Lari - 20 menit</li></ul>`;
+          break;
+        case "progres":
+          content = `<h3>Progres Mingguan</h3><p>Kamu telah berlatih selama <b>130 menit</b> minggu ini.</p>`;
+          break;
+        case "asupan":
+          content = `<h3>Asupan Kalori</h3><ul><li>Nasi - 200 kcal</li><li>Telur - 90 kcal</li><li>Sayur - 50 kcal</li></ul>`;
+          break;
+        case "kalender":
+          content = `<h3>Kalender Latihan</h3><p>Senin: Push-up<br>Rabu: Lari<br>Jumat: Yoga</p>`;
+          break;
+      }
+      document.getElementById("fiturContent").innerHTML = content;
+    }
+
+    function hitungKalori() {
+      const durasi = parseInt(document.getElementById("durasi").value);
+      const jenis = parseFloat(document.getElementById("jenis").value);
+      if (!durasi || durasi <= 0) {
+        document.getElementById("hasil").innerText = "Masukkan durasi yang benar.";
+        return;
+      }
+      const hasil = durasi * jenis;
+      document.getElementById("hasil").innerHTML = `<p>Total Kalori Terbakar: <b>${hasil} kcal</b></p>`;
+    }
+  </script>
+</body>
+</html>
